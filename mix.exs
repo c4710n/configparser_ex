@@ -32,7 +32,11 @@ defmodule ConfigParser.Mixfile do
   #
   # Type `mix help deps` for more examples and options
   defp deps do
-    [{:earmark, "~> 1.3", only: :dev}, {:ex_doc, "~> 0.19", only: :dev}]
+    [
+      {:ordered_map, github: "jonnystorm/ordered-map-elixir", ref: "86e8b77"},
+      {:earmark, "~> 1.3", only: :dev},
+      {:ex_doc, "~> 0.19", only: :dev}
+    ]
   end
 
   defp package do
