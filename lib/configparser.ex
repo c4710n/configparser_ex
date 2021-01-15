@@ -310,14 +310,14 @@ defmodule ConfigParser do
           }
 
         # match a line that defines a value "key : value"
-        match = Regex.run(@colon_definition_regex, line) ->
-          [_, key, value] = match
+        # match = Regex.run(@colon_definition_regex, line) ->
+        #   [_, key, value] = match
 
-          %{
-            ParseState.define_config(parse_state, key, value)
-            | line_number: parse_state.line_number + 1,
-              last_indent: indent_level
-          }
+        #   %{
+        #     ParseState.define_config(parse_state, key, value)
+        #     | line_number: parse_state.line_number + 1,
+        #       last_indent: indent_level
+        #   }
 
         # when there's a value-ish line that on a line by itself, but which is not a continuation
         # then it actually represents a key that has no associated value (or a value of nil)
