@@ -1,11 +1,10 @@
 # ConfigParser for Elixir
 
-[![BuildStatus](https://travis-ci.org/easco/configparser_ex.svg?branch=master)](https://travis-ci.org/easco/configparser_ex)
-[![Module Version](https://img.shields.io/hexpm/v/configparser_ex.svg)](https://hex.pm/packages/configparser_ex)
-[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/configparser_ex/)
-[![Total Download](https://img.shields.io/hexpm/dt/configparser_ex.svg)](https://hex.pm/packages/configparser_ex)
-[![License](https://img.shields.io/hexpm/l/configparser_ex.svg)](https://github.com/easco/configparser_ex/blob/master/LICENSE)
-[![Last Updated](https://img.shields.io/github/last-commit/easco/configparser_ex.svg)](https://github.com/easco/configparser_ex/commits/master)
+[![Module Version](https://img.shields.io/hexpm/v/configparser.svg)](https://hex.pm/packages/configparser)
+[![Hex Docs](https://img.shields.io/badge/hex-docs-lightgreen.svg)](https://hexdocs.pm/configparser/)
+[![Total Download](https://img.shields.io/hexpm/dt/configparser.svg)](https://hex.pm/packages/configparser)
+[![License](https://img.shields.io/hexpm/l/configparser.svg)](https://github.com/c4710n/ex_configparser/blob/master/LICENSE)
+[![Last Updated](https://img.shields.io/github/last-commit/c4710n/ex_configparser.svg)](https://github.com/c4710n/ex_configparser/commits/master)
 
 This library implements a parser for config files in the style of Windows INI, as parsed by the Python [configparser](https://docs.python.org/3/library/configparser.html) library.
 
@@ -34,7 +33,8 @@ Basic config files look like this:
 first_key = value
 second_key = another_value
 ```
-The file shown in this sample defines a section called `config section` and then defines two config settings in key-value form.  The result of parsing this file would be:
+
+The file shown in this sample defines a section called `config section` and then defines two config settings in key-value form. The result of parsing this file would be:
 
 ```elixir
 {:ok,
@@ -42,13 +42,13 @@ The file shown in this sample defines a section called `config section` and then
      "second_key" => "another_value"}}}
 ```
 
-The `:ok` atom in the first part of the tuple indicates that parsing was successful.  The map in the second part of the tuple has keys that are the sections created in the file and the values are themselves value maps.  The value maps reflect the keys and values defined within that section.
+The `:ok` atom in the first part of the tuple indicates that parsing was successful. The map in the second part of the tuple has keys that are the sections created in the file and the values are themselves value maps. The value maps reflect the keys and values defined within that section.
 
 ## Config Definitions
 
-A section definition is simply the name of the section enclosed in square brackets `[like this]`.  Section names can contain spaces.
+A section definition is simply the name of the section enclosed in square brackets `[like this]`. Section names can contain spaces.
 
-Within a section, configuration definitions are key value pairs.  On a definition line, the key and value are separated by either a colon (:) or an equal sign (=):
+Within a section, configuration definitions are key value pairs. On a definition line, the key and value are separated by either a colon (:) or an equal sign (=):
 
 ```ini
 [key-value samples]
@@ -57,7 +57,8 @@ another_key_defined : with_a_colon
 keys can have spaces : true
 values = can have spaces too
 ```
-The value of a particular key can extend over more than one line.  The follow-on lines must be indented farther than the first line.
+
+The value of a particular key can extend over more than one line. The follow-on lines must be indented farther than the first line.
 
 ```ini
 [multi-line sample]
@@ -112,7 +113,7 @@ fake_stream = ["[section]", "key1 = value2", "key2:value2"] |> Stream.map(&(&1))
 {:ok, parse_result} = ConfigParser.parse_stream(fake_stream)
 ```
 
-As mentioned previously the result of doing the parsing is a tuple.  If successful, the first element of the tuple is `:ok` and the second element is the parsed result.
+As mentioned previously the result of doing the parsing is a tuple. If successful, the first element of the tuple is `:ok` and the second element is the parsed result.
 
 If the parser encounters an error, then the first part of the tuple will be the atom `:error` and the second element will be a string describing the error that was encountered:
 
@@ -124,8 +125,8 @@ If the parser encounters an error, then the first part of the tuple will be the 
 
 Starting with Version 3 of the library, it is possible to pass options to the parser:
 
-|  Option              | Value            | Effect |
-|----------------------|-----------------|--------------------------------------------------------------------------------------------------------------------------------------|
+| Option               | Value           | Effect                                                                                                                               |
+| -------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | `join_continuations` | `:with_newline` | The parser joins the lines of multi-line values with a newline. This is the default and matches the behavior of Python ConfigParser. |
 | `join_continuations` | `:with_space`   | The parser joins the lines of multi-line values with a space. This is the default behavior of the library prior to version 3.        |
 
@@ -137,17 +138,17 @@ You may add options as keyword arguments to the end of the `parse_file`, `parse_
 
 ## Alternative Map Implementations
 
-By default, `configparser_ex` uses `Map` provided by Elixir. It also supports other `Map`-compatible implementations.
+By default, `configparser` uses `Map` provided by Elixir. It also supports other `Map`-compatible implementations.
 
 For example, if you want to use an order-preserving map implementation, try [`ordered_map`](https://github.com/jonnystorm/ordered-map-elixir) with following configuration:
 
 ```elixir
-config :configparser_ex, map_implementation: OrderedMap
+config :configparser, map_implementation: OrderedMap
 ```
 
 ## Not Implemented
 
-This library is primarily intended to provide backward-compatibility in environments that already use config files. It does not handle creating, manipulating, or writing config files.  It treats config files as read-only entities.
+This library is primarily intended to provide backward-compatibility in environments that already use config files. It does not handle creating, manipulating, or writing config files. It treats config files as read-only entities.
 
 This library currently returns the parsed result as a raw data structure.
 
@@ -159,4 +160,6 @@ This library does not support the Python ConfigParser's customization features.
 
 Copyright (c) 2015 R. Scott Thompson
 
-Released under the BSD License, which can be found in the repository in [`LICENSE`](https://github.com/easco/configparser_ex).
+Copyright (c) 2021 c4710n
+
+Released under the BSD License, which can be found in the repository in [`LICENSE`](https://github.com/c4710n/ex_configparser).

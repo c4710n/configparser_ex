@@ -2,10 +2,10 @@ use Mix.Config
 
 case Mix.env() do
   :test_alternative_map ->
-    config :configparser_ex,
+    config :configparser,
       map_implementation: OrderedMap
 
   _ ->
-    config :configparser_ex,
+    config :configparser,
       map_implementation: Map
 end

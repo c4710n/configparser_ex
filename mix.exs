@@ -1,12 +1,13 @@
 defmodule ConfigParser.Mixfile do
   use Mix.Project
 
-  @source_url "https://github.com/easco/configparser_ex"
+  @version "4.0.0"
+  @source_url "https://github.com/c4710n/ex_configparser"
 
   def project do
     [
-      app: :configparser_ex,
-      version: "4.0.0",
+      app: :configparser,
+      version: @version,
       name: "ConfigParser for Elixir",
       source_url: @source_url,
       elixir: ">= 1.7.0",
@@ -34,11 +35,11 @@ defmodule ConfigParser.Mixfile do
       A module that parses INI-like files. Not unlike the Python configparser
       package.
       """,
-      maintainers: ["Scott Thompson"],
+      maintainers: ["Scott Thompson", "c4710n"],
       files: ["mix.exs", "lib", "LICENSE*", "README*", "CHANGELOG*"],
       licenses: ["BSD-3-Clause"],
       links: %{
-        "Changelog" => "https://hexdocs.pm/configparser_ex/changelog.html",
+        "Changelog" => "https://hexdocs.pm/configparser/changelog.html",
         "GitHub" => @source_url
       }
     ]
@@ -55,7 +56,9 @@ defmodule ConfigParser.Mixfile do
 
   defp aliases do
     [
-      {:"test.all", [&test/1, &test_alternative_map/1]}
+      {:"test.all", [&test/1, &test_alternative_map/1]},
+      publish: ["hex.publish", "tag"],
+      tag: &tag_release/1
     ]
   end
 
@@ -71,5 +74,11 @@ defmodule ConfigParser.Mixfile do
       "mix test test/configparser_alternative_map_test.exs",
       env: [{"MIX_ENV", "test_alternative_map"}]
     )
+  end
+
+  defp tag_release(_) do
+    Mix.shell().info("Tagging release as #{@version}")
+    System.cmd("git", ["tag", @version])
+    System.cmd("git", ["push", "--tags"])
   end
 end

@@ -6,7 +6,7 @@ defmodule ConfigParser.ParseState do
     delimeters: [:equal, :colon]
   }
 
-  @map Application.get_env(:configparser_ex, :map_implementation)
+  @map Application.get_env(:configparser, :map_implementation)
 
   # What line of the "file" are we parsing
   defstruct line_number: 1,

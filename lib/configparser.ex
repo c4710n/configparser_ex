@@ -1,7 +1,7 @@
 defmodule ConfigParser do
   alias ConfigParser.ParseState, as: ParseState
 
-  @map Application.get_env(:configparser_ex, :map_implementation)
+  @map Application.get_env(:configparser, :map_implementation)
 
   @moduledoc """
     The ConfigParser library implements a parser for config files in the style of Windows INI,
