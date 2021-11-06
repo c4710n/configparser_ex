@@ -107,7 +107,7 @@ defmodule ConfigParserTest do
     check_string(
       """
       [section]
-      you can also use : to delimit keys 
+      you can also use : to delimit keys
           from values
           and add a continuation
       """,
@@ -308,6 +308,44 @@ defmodule ConfigParserTest do
       assert parse_result == %{
                "section" => %{
                  "you can also use" => "to delimit keys from values and add a continuation"
+               }
+             }
+    end
+
+    test "parses with delimeters option" do
+      {:ok, parse_result} =
+        ConfigParser.parse_string(
+          """
+          [section]
+          # this is an interesting key value pair
+          you can use = to delimit keys from values
+          you can not use : to delimit keys from values
+          """,
+          delimeters: [:equal]
+        )
+
+      assert parse_result == %{
+               "section" => %{
+                 "you can use" => "to delimit keys from values",
+                 "you can not use : to delimit keys from values" => nil
+               }
+             }
+
+      {:ok, parse_result} =
+        ConfigParser.parse_string(
+          """
+          [section]
+          # this is an interesting key value pair
+          you can use : to delimit keys from values
+          you can not use = to delimit keys from values
+          """,
+          delimeters: [:colon]
+        )
+
+      assert parse_result == %{
+               "section" => %{
+                 "you can use" => "to delimit keys from values",
+                 "you can not use = to delimit keys from values" => nil
                }
              }
     end

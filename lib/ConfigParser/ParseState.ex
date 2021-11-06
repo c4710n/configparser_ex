@@ -2,7 +2,8 @@ defmodule ConfigParser.ParseState do
   @moduledoc false
 
   @default_options %{
-    join_continuations: :with_newline
+    join_continuations: :with_newline,
+    delimeters: [:equal, :colon]
   }
 
   @map Application.get_env(:configparser_ex, :map_implementation)

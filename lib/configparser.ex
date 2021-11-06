@@ -264,7 +264,8 @@ defmodule ConfigParser do
   @value_like_regex ~r{\s*(\S.*)}
 
   # Parse a line while the parse state indicates we're in a good state
-  defp parse_line(line, parse_state = %ParseState{result: {:ok, _}}) do
+  defp parse_line(line, parse_state = %ParseState{result: {:ok, _}, options: options}) do
+    delimeters = options.delimeters
     line = strip_inline_comments(line)
 
     # find out how many whitespace characters are on the front of the line
@@ -301,7 +302,7 @@ defmodule ConfigParser do
           }
 
         # match a line that defines a value "key = value"
-        match = Regex.run(@equals_definition_regex, line) ->
+        match = :equal in delimeters && Regex.run(@equals_definition_regex, line) ->
           [_, key, value] = match
 
           %{
@@ -311,7 +312,7 @@ defmodule ConfigParser do
           }
 
         # match a line that defines a value "key : value"
-        match = Regex.run(@colon_definition_regex, line) ->
+        match = :colon in delimeters && Regex.run(@colon_definition_regex, line) ->
           [_, key, value] = match
 
           %{
@@ -378,7 +379,12 @@ defmodule ConfigParser do
   end
 
   defp options_to_map([]), do: ParseState.default_options()
-  defp options_to_map(options) when is_list(options), do: Enum.into(options, %{})
+
+  defp options_to_map(options) when is_list(options) do
+    default_options = ParseState.default_options()
+    custom_options = Enum.into(options, %{})
+    Map.merge(default_options, custom_options)
+  end
 
   defp validate_options(%{} = options_map) do
     Enum.reduce(options_map, {:ok, options_map}, &option_reducer/2)
@@ -409,6 +415,17 @@ defmodule ConfigParser do
     else
       {:error,
        "The value for the join_continuations option should be :with_newline or :with_space"}
+    end
+  end
+
+  defp validate_option({:delimeters, value} = pair) when is_list(value) do
+    permitted_values = [:equal, :colon]
+
+    if Enum.all?(value, fn v -> v in permitted_values end) do
+      {:ok, pair}
+    else
+      {:error,
+       "The value for the delimeters option should be a list consists of :equal and :colon"}
     end
   end
 
