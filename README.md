@@ -8,6 +8,11 @@
 
 This library implements a parser for config files in the style of Windows INI, as parsed by the Python [configparser](https://docs.python.org/3/library/configparser.html) library.
 
+> This is a fork of [easco/configparser_ex](https://github.com/easco/configparser_ex), which adding:
+>
+> - support for alternative map implementations
+> - new option - `:delimeters`
+
 ### A note about Mix.Config
 
 This library is intended for compatibility in environments that are already
